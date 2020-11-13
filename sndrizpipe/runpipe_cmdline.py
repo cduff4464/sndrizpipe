@@ -127,9 +127,9 @@ def runpipe(outroot, onlyfilters=[], onlyepochs=[],
         dosetup = True
         dorefim = True
         dodriz1 = True
-        doreg = True
+        doreg   = True
         dodriz2 = True
-        dodiff = True
+        dodiff  = True
         # Note: we don't set dostack = True with doall, so you have to use
         #  --dostack to get a stacked image
 
@@ -156,9 +156,13 @@ def runpipe(outroot, onlyfilters=[], onlyepochs=[],
         epochlistfile = "%s_epochs.txt" % outroot
     fltlist = glob.glob("%s/*fl?.fits" % fltdir)
     if not len(fltlist):
+        print ('\n\n')
+        print ('fltlist')
+        print (fltlist)
         raise RuntimeError("There are no flt/flc/flm files in %s !!" % fltdir)
 
     if os.path.exists(epochlistfile):
+        print ('epochlistfile', epochlistfile)
         explist_all = exposures.read_explist(epochlistfile,
             combinefilterdict=combinefilterdict)
         if verbose:
@@ -501,7 +505,7 @@ def runpipe(outroot, onlyfilters=[], onlyepochs=[],
             # Run tweakback to update the constituent flts
             try:
                 tweakback(outsciFEV, input=fltlistFEV, origwcs=origwcs,
-                          wcsname=wcsname, verbose=verbose, force=clobber)
+                          wcsname=wcsname, newname=wcsname, verbose=verbose, force=clobber)
             except KeyError as e:
                 import pdb
                 pdb.set_trace()
@@ -976,7 +980,7 @@ def mkparser():
     parser.add_argument('--debug', action='store_true',
                         help='Enter debug mode. [False]', default=False)
     parser.add_argument('--dotest', action='store_true',
-                        help='Process the SN Colfax test data (all other'
+                        help='Process the SN Stone test data (all other'
                              'options ignored)', default=False)
 
     parser.add_argument('--singlestar', action='store_true',
@@ -1164,7 +1168,7 @@ def main():
 
     if argv.dotest:
         from sndrizpipe import testpipe
-        testpipe.colfaxtest(getflts=True, runpipeline=True)
+        testpipe.doalltest()
         return 0
 
     ra, dec = None, None
@@ -1218,5 +1222,5 @@ def main():
     return 0
 
 
-if __name__ == "__main__":
-    main()
+#if __name__ == "__main__":
+#    main()

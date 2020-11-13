@@ -11,11 +11,10 @@ Dependencies
 --------
 
 Requires drizzlepac from STScI.  Recommended installation method: use
-the Ureka package, which provides python, numpy, pyraf, drizzlepac,
-etc., with mutually compatible versions, bundled and maintained by
-STScI/Gemini.
+the AstroConda package, which provides python, numpy, pyraf, drizzlepac,
+etc., with mutually compatible versions.  Maintained by STScI.
    
-http://ssb.stsci.edu/ureka/
+https://astroconda.readthedocs.io/en/latest/
 
 ---------
 Environment variables
@@ -213,3 +212,24 @@ In the current version, lots of cruft is left behind in the sub-directories
 
 
 
+### Building and using sndrizpipe with docker
+
+To build sndrizpipe as a docker container run:
+
+```bash
+docker build -t sndrizpipe .
+```
+
+To run the test, change directorty to the folder with the extracted sndrizpipe/colfax_test.tgz data. Then the docker image can be run with:
+
+```bash
+docker run -v$PWD:/work -it --rm sndrizpipe --filters F160W  --doall --mjdmin 56010 --mjdmax 56300 --ra 189.156538 --dec 62.309147  --refcat 'goodsn_mosaic.cat' colfax
+```
+
+You can also create a bash/zsh function to seem as if you're running sndrizpipe nativly by adding this to your `.bashrc`/`.zshrc` file:
+
+```bash
+sndrizpipe () {
+	docker run -v$PWD:/work -it --rm sndrizpipe $@
+}
+```
